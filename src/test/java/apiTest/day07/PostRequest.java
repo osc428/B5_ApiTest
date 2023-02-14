@@ -6,6 +6,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
@@ -52,8 +55,46 @@ public class PostRequest {
 
     @Test
     public void test2() {
+        Map<String , Object> requestMap = new HashMap<>();
+        requestMap.put("email", "bjorn2@gmail.com");
+        requestMap.put("password", "tesr6543");
+        requestMap.put("name", "bjornb");
+        requestMap.put("google", "bjornbg");
+        requestMap.put("facebook", "bjornbf");
+        requestMap.put("github", "bjornbh");
 
+        Response response = given().contentType(ContentType.JSON).and().body(requestMap).when().post("api/users");
 
+        Assert.assertEquals(response.statusCode(),200);
+        Assert.assertTrue(response.body().asString().contains("token"));
+        response.prettyPrint();
 
     }
+
+
+    @Test
+    public void test3() {
+        NewUserInfo newUserInfo = new NewUserInfo();
+        newUserInfo.setEmail("bjorn@gmail.com");
+        newUserInfo.setPassword("test7465");
+        newUserInfo.setName("bjornc");
+        newUserInfo.setGoogle("bjorncg");
+        newUserInfo.setFacebook("bjorncf");
+        newUserInfo.setGithub("bjornch");
+
+        Response response = given().contentType(ContentType.JSON).and().body(newUserInfo).when().post("api/users");
+
+        Assert.assertEquals(response.statusCode(),200);
+        Assert.assertTrue(response.body().asString().contains("token"));
+        response.prettyPrint();
+    }
+
+
+    @Test
+    public void test4() {
+        // NewUserInfo newUserInfo = new NewUserInfo("abc@husein.com", );            //parametlreli yle ayni islem
+     }
+
+
+
 }
